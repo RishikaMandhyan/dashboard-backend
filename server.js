@@ -236,7 +236,12 @@ app.post("/signup", async (req, res) => {
     await User.insertMany([temp]);
 
     // res.cookie("accessToken", accessToken, { httpOnly: true });
-    res.cookie("refreshToken", refreshToken, { httpOnly: true });
+    res.cookie("refreshToken", refreshToken, 
+    { 
+      httpOnly: true ,
+      secure: true, // Make sure to set this for HTTPS
+      sameSite: 'None',
+    });
     res.status(201).json({ accessToken: accessToken });
   } catch (err) {
     res.status(500).json(err);
@@ -286,7 +291,11 @@ app.post("/login", async (req, res) => {
       );
 
       // res.cookie("accessToken", accessToken, { httpOnly: true });
-      res.cookie("refreshToken", refreshToken, { httpOnly: true });
+      res.cookie("refreshToken", refreshToken,
+       {httpOnly: true,
+        secure: true, // Make sure to set this for HTTPS
+        sameSite: 'None',
+      });
       res.json({ accessToken: accessToken });
     } else {
       res.status(401).json("Password Incorrect");
